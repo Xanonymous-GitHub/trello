@@ -28,8 +28,14 @@
     &-xx-large {
         font-size: xx-large;
     }
+    &-large {
+        font-size: large;
+    }
     &-xx-small {
         font-size: xx-small;
+    }
+    &-small {
+        font-size: small;
     }
     &-left {
         text-align: left;
@@ -45,7 +51,23 @@
 .full-width {
     position: relative;
     width: 100%;
-    &-_600px{
+    &-_600px {
         max-width: 600px;
     }
+}
+
+.border {
+    &-none {
+        border: none;
+    }
+}
+
+.background-none {
+    background: transparent;
+}
+
+.at-bottom {
+    position: relative;
+    vertical-align: bottom;
+    bottom: 0;
 }

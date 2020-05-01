@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex, { StoreOptions } from "vuex";
 import { app } from "./modules/app";
 import { RootState } from "./types/root";
-import { saveStatePlugin } from "@/utils/cookie";
+import { saveStatePlugin } from "@/utils/storage";
 
 Vue.use(Vuex);
 
