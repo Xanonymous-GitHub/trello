@@ -1,8 +1,8 @@
 export interface AppState {
-  board: Board;
+  board: TrelloBoard;
 }
 
-interface Board {
+export interface TrelloBoard {
   name: string;
   columns: Array<Column>;
 }
@@ -10,6 +10,7 @@ interface Board {
 interface Column {
   name: string;
   tasks: Array<Task>;
+  id: string;
 }
 
 interface Task {

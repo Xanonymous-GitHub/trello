@@ -1,0 +1,39 @@
+@import "./mixin.scss";
+
+.board {
+    background-color: #00e3b2;
+    overflow: auto;
+    height: 100%;
+}
+
+.flex {
+    @include flex
+}
+
+.items {
+    &-start {
+        justify-content: start;
+    }
+    &-center {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.column {
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    box-shadow: #282828 1px 1px 8px 1px;
+}
+
+.font {
+    @include font;
+}
+
+.position {
+    &-relative {
+        position: relative;
+    }
+}

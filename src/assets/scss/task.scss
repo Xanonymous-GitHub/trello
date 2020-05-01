@@ -1,0 +1,12 @@
+@import "./mixin.scss";
+.task {
+    display: flex;
+}
+
+.font {
+    @include font;
+}
+
+.flex {
+    @include flex;
+}

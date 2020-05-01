@@ -3,7 +3,8 @@ export const board = {
   name: "workshop",
   columns: [
     {
-      name: "todo",
+      name: "Todo",
+      id: uuid(),
       tasks: [
         {
           description: "",
