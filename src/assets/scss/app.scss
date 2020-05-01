@@ -45,4 +45,7 @@
 .full-width {
     position: relative;
     width: 100%;
+    &-_600px{
+        max-width: 600px;
+    }
 }

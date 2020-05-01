@@ -2,8 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "@/assets/scss/main.scss";
 import AppButton from "@/components/AppButton.vue";
+import "@/assets/scss/main.scss";
 
 Vue.component("AppButton", AppButton);
 

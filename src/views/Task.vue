@@ -1,5 +1,7 @@
 <template>
-  <div class="full-width task flex flex-col items-start justify-between">
+  <div
+    class="full-width full-width-_600px task flex flex-col items-start justify-between"
+  >
     {{ task.name }}
   </div>
 </template>
