@@ -1,0 +1,48 @@
+.flex {
+    display: flex;
+    &-row {
+        flex-direction: row;
+    }
+    &-column {
+        flex-direction: column;
+    }
+    &-wrap {
+        flex-wrap: wrap;
+    }
+}
+
+.items {
+    &-start {
+        justify-content: start;
+    }
+    &-center {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.font {
+    &-bold {
+        font-weight: bold;
+    }
+    &-xx-large {
+        font-size: xx-large;
+    }
+    &-xx-small {
+        font-size: xx-small;
+    }
+    &-left {
+        text-align: left;
+    }
+}
+
+.position {
+    &-relative {
+        position: relative;
+    }
+}
+
+.full-width {
+    position: relative;
+    width: 100%;
+}

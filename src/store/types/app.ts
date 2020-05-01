@@ -9,13 +9,13 @@ export interface TrelloBoard {
 
 interface Column {
   name: string;
-  tasks: Array<Task>;
+  tasks: Array<TrelloTask>;
   id: string;
 }
 
-interface Task {
+export interface TrelloTask {
   description?: string;
   name: string;
-  id: string;
+  id?: string;
   userAssigned?: boolean;
 }

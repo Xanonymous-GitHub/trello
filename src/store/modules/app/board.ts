@@ -7,7 +7,7 @@ export const board = {
       id: uuid(),
       tasks: [
         {
-          description: "",
+          description: "the one",
           name: "first work",
           id: uuid(),
           userAssigned: false,
@@ -20,6 +20,30 @@ export const board = {
         },
         {
           description: "",
+          name: "third work",
+          id: uuid(),
+          userAssigned: false,
+        },
+      ],
+    },
+    {
+      name: "Don't do",
+      id: uuid(),
+      tasks: [
+        {
+          description: "the one",
+          name: "first work",
+          id: uuid(),
+          userAssigned: false,
+        },
+        {
+          description: "",
+          name: "second work",
+          id: uuid(),
+          userAssigned: false,
+        },
+        {
+          description: "cc",
           name: "third work",
           id: uuid(),
           userAssigned: false,
