@@ -18,4 +18,9 @@ export const mutations: MutationTree<AppState> = {
     const taskToMove = fromTasks.splice(taskIndex, 1)[0];
     toTasks.push(taskToMove);
   },
+  [mutationTypes.MOVE_COLUMN](state, { fromColumnIndex, toColumnIndex }) {
+    const columnList = state.board.columns;
+    const columnToMove = columnList.splice(fromColumnIndex, 1)[0];
+    columnList.splice(toColumnIndex, 0, columnToMove);
+  },
 };

@@ -5,7 +5,9 @@
         :key="column.id"
         class="column"
         v-for="(column, $columnIndex) of board.columns"
-        @drop="moveTask($event, column.tasks)"
+        draggable
+        @dragstart.self="pickupColumn($event, $columnIndex)"
+        @drop="moveTaskOrColumn($event, column.tasks, $columnIndex)"
         @dragover.prevent
         @dragenter.prevent
       >
@@ -74,6 +76,9 @@ export default class Board extends Vue {
   @Mutation(mutationTypes.MOVE_TASK, { namespace: "app" })
   private MOVE_TASK!: (data: object) => void;
 
+  @Mutation(mutationTypes.MOVE_COLUMN, { namespace: "app" })
+  private MOVE_COLUMN!: (data: object) => void;
+
   public beforeMount() {
     this.$store.registerModule("Board", {
       mutations,
@@ -81,7 +86,7 @@ export default class Board extends Vue {
   }
 
   public destroyed() {
-    this.$store.unregisterModule("Task");
+    this.$store.unregisterModule("Board");
   }
 
   private get isTaskOpen(): boolean {
@@ -125,6 +130,27 @@ export default class Board extends Vue {
     event.dataTransfer.dropEffect = "move";
     event.dataTransfer.setData("task-index", taskIndex);
     event.dataTransfer.setData("from-column-index", fromColumnIndex);
+    event.dataTransfer.setData("type", "task");
+  }
+
+  private pickupColumn(event: any, fromColumnIndex: number) {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.setData("from-column-index", fromColumnIndex);
+    event.dataTransfer.setData("type", "column");
+  }
+
+  private moveTaskOrColumn(
+    event: any,
+    toTasks: TrelloTask,
+    toColumnIndex: number
+  ) {
+    const type = event.dataTransfer.getData("type");
+    if (type === "task") {
+      this.moveTask(event, toTasks);
+    } else {
+      this.moveColumn(event, toColumnIndex);
+    }
   }
 
   private moveTask(event: any, toTasks: TrelloTask) {
@@ -135,6 +161,14 @@ export default class Board extends Vue {
       fromTasks,
       toTasks,
       taskIndex,
+    });
+  }
+
+  private moveColumn(event: any, toColumnIndex: number) {
+    const fromColumnIndex = event.dataTransfer.getData("from-column-index");
+    this.MOVE_COLUMN({
+      fromColumnIndex,
+      toColumnIndex,
     });
   }
 }
