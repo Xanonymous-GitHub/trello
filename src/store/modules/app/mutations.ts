@@ -14,9 +14,12 @@ export const mutations: MutationTree<AppState> = {
   [mutationTypes.UPDATE_TASK](state, { task, key, value }) {
     Vue.set(task, key, value);
   },
-  [mutationTypes.MOVE_TASK](state, { fromTasks, toTasks, taskIndex }) {
-    const taskToMove = fromTasks.splice(taskIndex, 1)[0];
-    toTasks.push(taskToMove);
+  [mutationTypes.MOVE_TASK](
+    state,
+    { fromTasks, toTasks, fromTaskIndex, toTaskIndex }
+  ) {
+    const taskToMove = fromTasks.splice(fromTaskIndex, 1)[0];
+    toTasks.splice(toTaskIndex, 0, taskToMove);
   },
   [mutationTypes.MOVE_COLUMN](state, { fromColumnIndex, toColumnIndex }) {
     const columnList = state.board.columns;

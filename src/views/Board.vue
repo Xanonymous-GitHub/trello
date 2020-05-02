@@ -19,11 +19,16 @@
         <div class="list-reset">
           <div
             :key="task.id"
-            @click.prevent="goToTask(task)"
             class="task flex-column"
-            draggable
-            @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
             v-for="(task, $taskIndex) of column.tasks"
+            draggable
+            @click.prevent="goToTask(task)"
+            @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
+            @dragover.prevent
+            @dragenter.prevent
+            @drop.stop="
+              moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)
+            "
           >
             <span class="font-left font-bold">{{ task.name }}</span>
             <p
@@ -125,10 +130,14 @@ export default class Board extends Vue {
     });
   }
 
-  private pickupTask(event: any, taskIndex: number, fromColumnIndex: number) {
+  private pickupTask(
+    event: any,
+    fromTaskIndex: number,
+    fromColumnIndex: number
+  ) {
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.dropEffect = "move";
-    event.dataTransfer.setData("task-index", taskIndex);
+    event.dataTransfer.setData("from-task-index", fromTaskIndex);
     event.dataTransfer.setData("from-column-index", fromColumnIndex);
     event.dataTransfer.setData("type", "task");
   }
@@ -143,24 +152,32 @@ export default class Board extends Vue {
   private moveTaskOrColumn(
     event: any,
     toTasks: TrelloTask,
-    toColumnIndex: number
+    toColumnIndex: number,
+    toTaskIndex: number
   ) {
     const type = event.dataTransfer.getData("type");
     if (type === "task") {
-      this.moveTask(event, toTasks);
+      this.moveTask(
+        event,
+        toTasks,
+        toTaskIndex !== undefined
+          ? toTaskIndex
+          : (toTasks as TrelloTask & Array<TrelloTask>).length
+      );
     } else {
       this.moveColumn(event, toColumnIndex);
     }
   }
 
-  private moveTask(event: any, toTasks: TrelloTask) {
+  private moveTask(event: any, toTasks: TrelloTask, toTaskIndex: number) {
     const fromColumnIndex = event.dataTransfer.getData("from-column-index");
     const fromTasks = this.board.columns[fromColumnIndex].tasks;
-    const taskIndex = event.dataTransfer.getData("task-index");
+    const fromTaskIndex = event.dataTransfer.getData("from-task-index");
     this.MOVE_TASK({
       fromTasks,
+      fromTaskIndex,
       toTasks,
-      taskIndex,
+      toTaskIndex,
     });
   }
 
