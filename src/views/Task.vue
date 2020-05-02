@@ -22,7 +22,6 @@
 import { Vue, Component, Prop, Emit } from "vue-property-decorator";
 import { Mutation } from "vuex-class";
 import { TrelloTask } from "@/store/types/app";
-import { mutations } from "@/store/modules/app/mutations";
 import * as mutationTypes from "@/store/modules/app/mutation-types";
 @Component({})
 export default class Task extends Vue {
@@ -31,16 +30,6 @@ export default class Task extends Vue {
 
   @Mutation(mutationTypes.UPDATE_TASK, { namespace: "app" })
   private UPDATE_TASK!: (data: object) => void;
-
-  public beforeMount() {
-    this.$store.registerModule("Task", {
-      mutations,
-    });
-  }
-
-  public destroyed() {
-    this.$store.unregisterModule("Task");
-  }
 
   private get task() {
     return this.trelloTask;

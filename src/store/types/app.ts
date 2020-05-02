@@ -4,10 +4,10 @@ export interface AppState {
 
 export interface TrelloBoard {
   name: string;
-  columns: Array<Column>;
+  columns: Array<TrelloColumn>;
 }
 
-interface Column {
+export interface TrelloColumn {
   name: string;
   tasks: Array<TrelloTask>;
   id: string;
