@@ -47,6 +47,15 @@
           </label>
         </div>
       </div>
+      <div class="column flex">
+        <input
+          type="text"
+          placeholder="+ New Column Name"
+          v-model="newColumnName"
+          class="full-width border-none background-none font-small at-bottom"
+          @keyup.enter="createColumn"
+        />
+      </div>
     </div>
     <div
       @click.self="close"
@@ -69,6 +78,8 @@ import * as mutationTypes from "@/store/modules/app/mutation-types";
 export default class Board extends Vue {
   private trelloTask!: TrelloTask;
 
+  private newColumnName = "";
+
   @State("board", { namespace: "app" })
   private board!: TrelloBoard;
 
@@ -83,6 +94,9 @@ export default class Board extends Vue {
 
   @Mutation(mutationTypes.MOVE_COLUMN, { namespace: "app" })
   private MOVE_COLUMN!: (data: object) => void;
+
+  @Mutation(mutationTypes.CREATE_COLUMN, { namespace: "app" })
+  private CREATE_COLUMN!: (data: object) => void;
 
   public beforeMount() {
     this.$store.registerModule("Board", {
@@ -187,6 +201,13 @@ export default class Board extends Vue {
       fromColumnIndex,
       toColumnIndex,
     });
+  }
+
+  private createColumn() {
+    this.CREATE_COLUMN({
+      name: this.newColumnName,
+    });
+    this.newColumnName = "";
   }
 }
 </script>

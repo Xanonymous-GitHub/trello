@@ -4,6 +4,13 @@ import { AppState } from "@/store/types/app";
 import * as mutationTypes from "./mutation-types";
 import uuid from "@/utils/uuid";
 export const mutations: MutationTree<AppState> = {
+  [mutationTypes.CREATE_COLUMN](state, { name }) {
+    state.board.columns.push({
+      name,
+      tasks: [],
+      id: uuid(),
+    });
+  },
   [mutationTypes.CREATE_TASK](state, { tasks, name }) {
     tasks.push({
       name,
