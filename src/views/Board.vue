@@ -34,7 +34,7 @@
       class="task-view flex items-center"
       v-if="isTaskOpen"
     >
-      <router-view :trelloTask="trelloTask" />
+      <router-view :trelloTask="trelloTask" @needToBeClose="close" />
     </div>
   </div>
 </template>
@@ -82,7 +82,7 @@ export default class Board extends Vue {
   }
 
   private close() {
-    this.$router.push({ name: "board" });
+    this.$router.replace({ name: "board" });
   }
 
   private createTask(event: any, tasks: TrelloTask) {
@@ -90,6 +90,7 @@ export default class Board extends Vue {
       tasks,
       name: event.target.value,
     });
+    event.target.value = "";
   }
 }
 </script>
