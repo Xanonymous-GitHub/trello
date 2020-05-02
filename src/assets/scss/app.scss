@@ -71,3 +71,10 @@
     vertical-align: bottom;
     bottom: 0;
 }
+
+.word {
+    &-wrap {
+        word-wrap: break-word;
+        white-space: pre-line;
+    }
+}

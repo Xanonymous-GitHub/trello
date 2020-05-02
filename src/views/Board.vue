@@ -1,7 +1,14 @@
 <template>
   <div class="board">
     <div class="flex flex-wrap item-start position-relative">
-      <div :key="column.id" class="column" v-for="column of board.columns">
+      <div
+        :key="column.id"
+        class="column"
+        v-for="(column, $columnIndex) of board.columns"
+        @drop="moveTask($event, column.tasks)"
+        @dragover.prevent
+        @dragenter.prevent
+      >
         <div
           class="flex items-center font-bold font-xx-large position-relative"
         >
@@ -12,10 +19,15 @@
             :key="task.id"
             @click.prevent="goToTask(task)"
             class="task flex-column"
-            v-for="task of column.tasks"
+            draggable
+            @dragstart="pickupTask($event, $taskIndex, $columnIndex)"
+            v-for="(task, $taskIndex) of column.tasks"
           >
             <span class="font-left font-bold">{{ task.name }}</span>
-            <p class="font-left font-xx-small" v-if="task.description">
+            <p
+              class="font-left font-xx-small word-wrap"
+              v-if="task.description"
+            >
               {{ task.description }}
             </p>
           </div>
@@ -56,13 +68,20 @@ export default class Board extends Vue {
   @Getter("getTask", { namespace: "app" })
   private getTask!: (id: string) => TrelloTask;
 
-  @Mutation(mutationTypes.CREATE_TASK)
+  @Mutation(mutationTypes.CREATE_TASK, { namespace: "app" })
   private CREATE_TASK!: (data: object) => void;
 
+  @Mutation(mutationTypes.MOVE_TASK, { namespace: "app" })
+  private MOVE_TASK!: (data: object) => void;
+
   public beforeMount() {
-    this.$store.registerModule("", {
+    this.$store.registerModule("Board", {
       mutations,
     });
+  }
+
+  public destroyed() {
+    this.$store.unregisterModule("Task");
   }
 
   private get isTaskOpen(): boolean {
@@ -85,12 +104,38 @@ export default class Board extends Vue {
     this.$router.replace({ name: "board" });
   }
 
-  private createTask(event: any, tasks: TrelloTask) {
+  private async createTask(event: any, tasks: TrelloTask) {
+    let newValue;
+    await new Promise((resolve) => {
+      newValue = event.target.value.trim();
+      event.target.value = "";
+      resolve();
+    });
+    if (!newValue) {
+      return;
+    }
     this.CREATE_TASK({
       tasks,
-      name: event.target.value,
+      name: newValue,
     });
-    event.target.value = "";
+  }
+
+  private pickupTask(event: any, taskIndex: number, fromColumnIndex: number) {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.setData("task-index", taskIndex);
+    event.dataTransfer.setData("from-column-index", fromColumnIndex);
+  }
+
+  private moveTask(event: any, toTasks: TrelloTask) {
+    const fromColumnIndex = event.dataTransfer.getData("from-column-index");
+    const fromTasks = this.board.columns[fromColumnIndex].tasks;
+    const taskIndex = event.dataTransfer.getData("task-index");
+    this.MOVE_TASK({
+      fromTasks,
+      toTasks,
+      taskIndex,
+    });
   }
 }
 </script>

@@ -7,11 +7,13 @@
       :value="task.name"
       @change="updateTaskProperty($event, 'name')"
       @keyup.enter="finishEdittingTaskName($event, 'name')"
+      placeholder="Enter a task name"
     />
     <textarea
       class="position-relative border-none"
       :value="task.description"
       @change="updateTaskProperty($event, 'description')"
+      placeholder="Enter some descriptions"
     />
   </div>
 </template>
@@ -27,13 +29,17 @@ export default class Task extends Vue {
   @Prop()
   private trelloTask!: TrelloTask;
 
-  @Mutation(mutationTypes.UPDATE_TASK)
+  @Mutation(mutationTypes.UPDATE_TASK, { namespace: "app" })
   private UPDATE_TASK!: (data: object) => void;
 
   public beforeMount() {
-    this.$store.registerModule("", {
+    this.$store.registerModule("Task", {
       mutations,
     });
+  }
+
+  public destroyed() {
+    this.$store.unregisterModule("Task");
   }
 
   private get task() {
