@@ -1,34 +1,35 @@
 <template>
-  <div
-    class="column"
-    draggable
-    @dragstart.self="pickupColumn($event, columnIndex)"
-    @drop="moveTaskOrColumn($event, column.tasks, columnIndex)"
-    @dragover.prevent
-    @dragenter.prevent
-  >
-    <div class="flex items-center font-bold font-xx-large position-relative">
-      {{ column.name }}
-    </div>
-    <div class="list-reset">
-      <ColumnTask
-        v-for="(task, $taskIndex) of column.tasks"
-        :key="task.id"
-        :board="board"
-        :task="task"
-        :column="column"
-        :taskIndex="$taskIndex"
-        :columnIndex="columnIndex"
-      />
-      <label>
-        <input
-          @keyup.enter="createTask($event, column.tasks)"
-          class="full-width border-none background-none font-small at-bottom"
-          placeholder="+ Enter a new task"
+  <AppDrop @drop="moveTaskOrColumn">
+    <AppDrag
+      class="column"
+      :transferData="{
+        type: 'column',
+        fromColumnIndex: columnIndex,
+      }"
+    >
+      <div class="flex items-center font-bold font-xx-large position-relative">
+        {{ column.name }}
+      </div>
+      <div class="list-reset">
+        <ColumnTask
+          v-for="(taskc, $taskIndex) of column.tasks"
+          :key="taskc.id"
+          :board="board"
+          :task="taskc"
+          :column="column"
+          :taskIndex="$taskIndex"
+          :columnIndex="columnIndex"
         />
-      </label>
-    </div>
-  </div>
+        <label>
+          <input
+            @keyup.enter="createTask($event, column.tasks)"
+            class="full-width border-none background-none font-small at-bottom"
+            placeholder="+ Enter a new task"
+          />
+        </label>
+      </div>
+    </AppDrag>
+  </AppDrop>
 </template>
 
 <script lang="ts">
@@ -37,11 +38,15 @@ import { Mutation } from "vuex-class";
 import { TrelloTask } from "@/store/types/app";
 import * as mutationTypes from "@/store/modules/app/mutation-types";
 import ColumnTask from "@/components/ColumnTask.vue";
+import AppDrag from "@/components/AppDrag.vue";
+import AppDrop from "@/components/AppDrop.vue";
 import movingTasksAndColumnsMixin from "@/mixins/movingTasksAndColumnsMixin";
 
 @Component({
   components: {
     ColumnTask,
+    AppDrag,
+    AppDrop,
   },
 })
 export default class BoardColumn extends Mixins(movingTasksAndColumnsMixin) {
@@ -65,8 +70,6 @@ export default class BoardColumn extends Mixins(movingTasksAndColumnsMixin) {
   }
 
   private pickupColumn(event: any, fromColumnIndex: number) {
-    event.dataTransfer.effectAllowed = "move";
-    event.dataTransfer.dropEffect = "move";
     event.dataTransfer.setData("from-column-index", fromColumnIndex);
     event.dataTransfer.setData("type", "column");
   }

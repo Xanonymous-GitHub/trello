@@ -1,5 +1,5 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { TrelloColumn, TrelloBoard, TrelloTask } from "@/store/types/app";
+import { TrelloColumn, TrelloBoard, TransferData } from "@/store/types/app";
 import { Mutation } from "vuex-class";
 import * as mutationTypes from "@/store/modules/app/mutation-types";
 @Component
@@ -13,49 +13,37 @@ class MovingTasksAndColumnsMixin extends Vue {
   @Prop({ required: true })
   private columnIndex!: number;
 
+  @Prop({ required: false })
+  private taskIndex!: number;
+
   @Mutation(mutationTypes.MOVE_TASK, { namespace: "app" })
   private MOVE_TASK!: (data: object) => void;
 
   @Mutation(mutationTypes.MOVE_COLUMN, { namespace: "app" })
   private MOVE_COLUMN!: (data: object) => void;
 
-  private moveTaskOrColumn(
-    event: any,
-    toTasks: TrelloTask,
-    toColumnIndex: number,
-    toTaskIndex: number
-  ) {
-    const type = event.dataTransfer.getData("type");
+  private moveTaskOrColumn(transferData: TransferData) {
+    const type = transferData.type;
     if (type === "task") {
-      this.moveTask(
-        event,
-        toTasks,
-        toTaskIndex !== undefined
-          ? toTaskIndex
-          : (toTasks as TrelloTask & Array<TrelloTask>).length
-      );
+      this.moveTask(transferData);
     } else {
-      this.moveColumn(event, toColumnIndex);
+      this.moveColumn(transferData);
     }
   }
 
-  private moveTask(event: any, toTasks: TrelloTask, toTaskIndex: number) {
-    const fromColumnIndex = event.dataTransfer.getData("from-column-index");
-    const fromTasks = this.board.columns[fromColumnIndex].tasks;
-    const fromTaskIndex = event.dataTransfer.getData("from-task-index");
+  private moveTask({ fromColumnIndex, fromTaskIndex }: TransferData) {
+    const fromTasks = this.board.columns[fromColumnIndex as number].tasks;
     this.MOVE_TASK({
       fromTasks,
       fromTaskIndex,
-      toTasks,
-      toTaskIndex,
+      toTasks: this.column.tasks,
+      toTaskIndex: this.taskIndex,
     });
   }
-
-  private moveColumn(event: any, toColumnIndex: number) {
-    const fromColumnIndex = event.dataTransfer.getData("from-column-index");
+  private moveColumn({ fromColumnIndex }: TransferData) {
     this.MOVE_COLUMN({
       fromColumnIndex,
-      toColumnIndex,
+      toColumnIndex: this.columnIndex,
     });
   }
 }

@@ -19,3 +19,9 @@ export interface TrelloTask {
   id?: string;
   userAssigned?: boolean;
 }
+
+export interface TransferData {
+  type: string;
+  fromColumnIndex?: number;
+  fromTaskIndex?: number;
+}
