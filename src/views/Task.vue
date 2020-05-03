@@ -43,7 +43,7 @@ export default class Task extends Vue {
     this.UPDATE_TASK({
       task: this.task,
       key,
-      value: event.target.value,
+      value: event.target.value.trim(),
     });
   }
 

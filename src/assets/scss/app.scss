@@ -62,13 +62,14 @@
 }
 
 .full-height{
-    position: relative; 
+    position: relative;
     height:100%;
     &-max-content{
         max-height: max-content;
     }
     &-90p{
         max-height: 90%;
+        height:auto;
     }
 }
 

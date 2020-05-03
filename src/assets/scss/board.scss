@@ -14,8 +14,12 @@
     position: relative;
     height: min-content;
     box-shadow: #282828 1px 1px 8px 1px;
+    &-name{
+        text-align: center;
+        overflow-x: scroll;
+    }
 }
 
-#new-task-input{
+.new-task-input{
     width: 100%;
 }

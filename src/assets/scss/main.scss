@@ -27,9 +27,15 @@ textarea {
     max-height: 100%;
     font-family: Avenir, Helvetica, Arial, sans-serif;
     color: #2c3e50;
+    &:focus{
+        outline: none;
+    }
 }
 
 input{
     font-family: Avenir, Helvetica, Arial, sans-serif;
     color: #2c3e50;
+    &:focus{
+        outline: none;
+    }
 }

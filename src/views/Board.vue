@@ -74,7 +74,7 @@ export default class Board extends Vue {
 
   private createColumn() {
     this.CREATE_COLUMN({
-      name: this.newColumnName,
+      name: this.newColumnName.trim(),
     });
     this.newColumnName = "";
   }
