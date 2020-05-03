@@ -7,10 +7,12 @@
         fromColumnIndex: columnIndex,
       }"
     >
-      <div class="flex items-center font-bold font-xx-large position-relative">
+      <div
+        class="flex items-center font-bold font-xx-large position-relative word-wrap"
+      >
         {{ column.name }}
       </div>
-      <div class="list-reset">
+      <div class="list-reset full-width">
         <ColumnTask
           v-for="(taskc, $taskIndex) of column.tasks"
           :key="taskc.id"
@@ -22,8 +24,9 @@
         />
         <label>
           <input
+            id="new-task-input"
             @keyup.enter="createTask($event, column.tasks)"
-            class="full-width border-none background-none font-small at-bottom"
+            class="full-width border-none background-none font-small at-bottom position-relative position-left word-wrap"
             placeholder="+ Enter a new task"
           />
         </label>

@@ -1,6 +1,8 @@
 <template>
-  <div class="board">
-    <div class="flex flex-wrap item-start position-relative">
+  <div class="board full-width">
+    <div
+      class="flex flex-wrap item-start full-width word-wrap flex-align-self-start"
+    >
       <BoardColumn
         v-for="(column, $columnIndex) of board.columns"
         :key="column.id"

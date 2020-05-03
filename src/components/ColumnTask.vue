@@ -1,7 +1,7 @@
 <template>
   <AppDrop @drop="moveTaskOrColumn">
     <AppDrag
-      class="task flex-column"
+      class="task flex-column full-width"
       :transferData="{
         type: 'task',
         fromColumnIndex: columnIndex,
@@ -9,7 +9,7 @@
       }"
       @click.prevent="goToTask(task)"
     >
-      <span class="font-left font-bold">{{ task.name }}</span>
+      <span class="font-left font-bold word-wrap">{{ task.name }}</span>
       <p class="font-left font-xx-small word-wrap" v-if="task.description">
         {{ task.description }}
       </p>

@@ -1,19 +1,23 @@
 <template>
   <div
-    class="full-width full-width-_600px task no-effect flex flex-column items-start justify-between"
+    class="full-width full-width-_600px task no-effect flex flex-column items-start justify-between full-height-90p"
   >
     <input
-      class="full-width font-large border-none font-bold"
+      class="full-width font-large border-none font-bold word-wrap"
       :value="task.name"
       @change="updateTaskProperty($event, 'name')"
       @keyup.enter="finishEdittingTaskName($event, 'name')"
       placeholder="Enter a task name"
     />
     <textarea
-      class="position-relative border-none"
+      class="position-relative border-none full-height-max-content full-width"
       :value="task.description"
-      @change="updateTaskProperty($event, 'description')"
       placeholder="Enter some descriptions"
+      @change="updateTaskProperty($event, 'description')"
+      @keyup="updateTextAreaSize($event)"
+      @focus="updateTextAreaSize($event)"
+      @show="updateTextAreaSize($event)"
+      @play="updateTextAreaSize($event)"
     />
   </div>
 </template>
@@ -41,6 +45,11 @@ export default class Task extends Vue {
       key,
       value: event.target.value,
     });
+  }
+
+  private updateTextAreaSize(event: any) {
+    event.target.style.height = "1px";
+    event.target.style.height = 25 + event.target.scrollHeight + "px";
   }
 
   @Emit("needToBeClose")

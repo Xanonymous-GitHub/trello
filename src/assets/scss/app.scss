@@ -9,6 +9,9 @@
     &-wrap {
         flex-wrap: wrap;
     }
+    &-align-self-start{
+        align-self: flex-start;
+    }
 }
 
 .items {
@@ -46,13 +49,26 @@
     &-relative {
         position: relative;
     }
+    &-left{
+        left:0;
+    }
 }
 
 .full-width {
     position: relative;
-    width: 100%;
     &-_600px {
         max-width: 600px;
+    }
+}
+
+.full-height{
+    position: relative; 
+    height:100%;
+    &-max-content{
+        max-height: max-content;
+    }
+    &-90p{
+        max-height: 90%;
     }
 }
 
@@ -74,7 +90,14 @@
 
 .word {
     &-wrap {
-        word-wrap: break-word;
+        word-wrap: normal;
+        word-break: break-all;
         white-space: pre-line;
+    }
+}
+
+.float{
+    &-left{
+        float: left;
     }
 }

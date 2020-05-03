@@ -6,11 +6,16 @@
 
 
 .column {
-    background-color: #d5d5d5;
+    background-color: #e6eeee;
     border-radius: 5px;
     padding: 15px;
     margin: 10px;
-    min-width: 300px;
+    max-width: 500px;
+    position: relative;
     height: min-content;
     box-shadow: #282828 1px 1px 8px 1px;
+}
+
+#new-task-input{
+    width: 100%;
 }
